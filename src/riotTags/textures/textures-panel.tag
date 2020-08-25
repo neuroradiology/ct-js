@@ -26,6 +26,12 @@ textures-panel.panel.view
                 )
                     svg.feather
                         use(xlink:href="data/icons.svg#clipboard")
+                button(
+                    onclick="{parent.openGenerator}"
+                    title="{voc.generatePlaceholder}"
+                )
+                    svg.feather
+                        use(xlink:href="data/icons.svg#loader")
             asset-viewer(
                 collection="{global.currentProject.skeletons}"
                 contextmenu="{showSkeletonPopup}"
@@ -46,6 +52,7 @@ textures-panel.panel.view
                             use(xlink:href="data/icons.svg#download")
                         span {voc.import}
     texture-editor(if="{editing}" texture="{currentTexture}")
+    texture-generator(if="{generating}")
     context-menu(menu="{textureMenu}" ref="textureMenu")
     script.
         const glob = require('./data/node_requires/glob');
@@ -140,6 +147,10 @@ textures-panel.panel.view
             const {importImageToTexture} = require('./data/node_requires/resources/textures');
             importImageToTexture(imageBuffer);
             alertify.success(this.vocGlob.pastedFromClipboard);
+        };
+
+        this.openGenerator = () => {
+            this.generating = true;
         };
 
         const deleteCurrentTexture = () => {
